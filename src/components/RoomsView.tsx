@@ -6,6 +6,23 @@ import {
   Sparkles, Calendar, MessageSquare, Anchor, Heart 
 } from "lucide-react";
 import { ParallaxImage } from "./ParallaxImage";
+import { motion, AnimatePresence } from "motion/react";
+
+// Variants for elegant micro-animations and staggered coordinate entrances
+const containerVariants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.05
+    }
+  }
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 12 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.35, ease: "easeOut" } }
+};
 
 interface RoomsViewProps {
   selectedRoomId: string | null;
@@ -115,13 +132,21 @@ export default function RoomsView({ selectedRoomId, setSelectedRoomId }: RoomsVi
         </div>
 
         {/* Room Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          variants={containerVariants}
+          initial="hidden"
+          animate="show"
+          key={filterCapacity}
+        >
           {filteredRooms.map((room) => {
             const hasVistaMar = !room.id.includes("adicional");
             return (
-              <div
+              <motion.div
                 key={room.id}
-                className="bg-white rounded-lg overflow-hidden shadow-sm border border-natural-border flex flex-col justify-between hover:shadow-md transition-all duration-200 group"
+                className="bg-white rounded-lg overflow-hidden shadow-sm border border-natural-border flex flex-col justify-between hover:shadow-md transition-all duration-300 group"
+                variants={cardVariants}
+                layout
               >
                  {/* Room Image */}
                 <div className="relative h-64 overflow-hidden bg-natural-sand">
@@ -176,10 +201,10 @@ export default function RoomsView({ selectedRoomId, setSelectedRoomId }: RoomsVi
                     </button>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
-        </div>
+        </motion.div>
 
         {/* General Hotel Freebies / Policies */}
         <div className="mt-16 bg-natural-soil text-white rounded-lg p-8 border border-natural-olive/20 shadow-sm">
@@ -228,116 +253,130 @@ export default function RoomsView({ selectedRoomId, setSelectedRoomId }: RoomsVi
       </div>
 
       {/* Details Modal */}
-      {activeModalRoom && (
-        <div className="fixed inset-0 z-50 overflow-y-auto bg-natural-soil/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="relative bg-[#FDFBF7] rounded-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto shadow-xl flex flex-col md:flex-row border border-natural-border text-left">
-            
-            {/* Close Button */}
-            <button
-              onClick={handleCloseModal}
-              className="absolute top-4 right-4 z-10 p-2 bg-natural-soil/90 rounded-full text-white hover:bg-natural-olive transition-colors cursor-pointer"
+      <AnimatePresence>
+        {activeModalRoom && (
+          <motion.div 
+            className="fixed inset-0 z-50 overflow-y-auto bg-natural-soil/60 backdrop-blur-sm flex items-center justify-center p-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+          >
+            <motion.div 
+              className="relative bg-[#FDFBF7] rounded-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto shadow-xl flex flex-col md:flex-row border border-natural-border text-left"
+              initial={{ scale: 0.96, y: 12, opacity: 0 }}
+              animate={{ scale: 1, y: 0, opacity: 1 }}
+              exit={{ scale: 0.96, y: 12, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 350, damping: 28 }}
             >
-              <X className="w-5 h-5" />
-            </button>
+              
+              {/* Close Button */}
+              <button
+                onClick={handleCloseModal}
+                className="absolute top-4 right-4 z-10 p-2 bg-natural-soil/90 rounded-full text-white hover:bg-natural-olive transition-colors cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
 
-            {/* Left Column: Image and Amenidades list */}
-            <div className="md:w-1/2 p-6 md:p-8 border-b md:border-b-0 md:border-r border-natural-border">
-              <div className="h-64 rounded overflow-hidden mb-6 bg-natural-sand shadow-inner relative">
-                <ParallaxImage 
-                  src={activeModalRoom.imagen} 
-                  alt={activeModalRoom.tipo} 
-                  className="w-full h-full"
-                  speed={15}
-                />
-              </div>
+              {/* Left Column: Image and Amenidades list */}
+              <div className="md:w-1/2 p-6 md:p-8 border-b md:border-b-0 md:border-r border-natural-border">
+                <div className="h-64 rounded overflow-hidden mb-6 bg-natural-sand shadow-inner relative">
+                  <ParallaxImage 
+                    src={activeModalRoom.imagen} 
+                    alt={activeModalRoom.tipo} 
+                    className="w-full h-full"
+                    speed={15}
+                  />
+                </div>
 
-              <h4 className="text-[10px] font-mono uppercase tracking-widest text-natural-earth/50 mb-3 font-bold">Inclusiones de la Habitación</h4>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-natural-earth">
-                {activeModalRoom.amenidades.map((amenidad, index) => (
-                  <div key={index} className="flex items-center gap-2">
-                    <Check className="w-3.5 h-3.5 text-natural-olive flex-shrink-0" />
-                    <span>{amenidad}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Right Column: Custom reservation form */}
-            <div className="md:w-1/2 p-6 md:p-8 flex flex-col justify-between">
-              <div>
-                <span className="text-[10px] font-mono tracking-widest uppercase text-natural-olive font-bold block mb-1">
-                  Reserva Directa vía WhatsApp
-                </span>
-                <h3 className="text-2xl font-serif font-light text-natural-soil mb-1">{activeModalRoom.tipo}</h3>
-                <p className="text-natural-olive font-bold text-sm mb-4">{activeModalRoom.precioDisplay}</p>
-                <p className="text-xs text-natural-earth/80 leading-relaxed mb-6">
-                  {activeModalRoom.descripcion}
-                </p>
-
-                {/* Form Simulation */}
-                <div className="bg-natural-sand border border-natural-border rounded p-4 space-y-3 mb-6">
-                  <div className="grid grid-cols-2 gap-3">
-                    <div>
-                      <label className="block text-[10px] font-mono uppercase text-natural-earth/50 mb-1">
-                        Llegada
-                      </label>
-                      <input
-                        type="date"
-                        value={inDate}
-                        onChange={(e) => setInDate(e.target.value)}
-                        className="w-full bg-natural-cream border border-natural-border rounded px-2.5 py-1.5 text-xs focus:outline-none focus:border-natural-olive"
-                      />
+                <h4 className="text-[10px] font-mono uppercase tracking-widest text-natural-earth/50 mb-3 font-bold">Inclusiones de la Habitación</h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-natural-earth">
+                  {activeModalRoom.amenidades.map((amenidad, index) => (
+                    <div key={index} className="flex items-center gap-2">
+                      <Check className="w-3.5 h-3.5 text-natural-olive flex-shrink-0" />
+                      <span>{amenidad}</span>
                     </div>
-                    <div>
-                      <label className="block text-[10px] font-mono uppercase text-[#2C2623]/50 mb-1">
-                        Salida
-                      </label>
-                      <input
-                        type="date"
-                        value={outDate}
-                        onChange={(e) => setOutDate(e.target.value)}
-                        className="w-full bg-natural-cream border border-natural-border rounded px-2.5 py-1.5 text-xs focus:outline-none focus:border-natural-olive"
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block text-[10px] font-mono uppercase text-natural-earth/50 mb-1">
-                      Huéspedes
-                    </label>
-                    <select
-                      value={guestsCount}
-                      onChange={(e) => setGuestsCount(e.target.value)}
-                      className="w-full bg-natural-cream border border-natural-border rounded px-2.5 py-1.5 text-xs focus:outline-none focus:border-natural-olive"
-                    >
-                      <option value="1 Persona">1 Persona</option>
-                      <option value="2 Personas">2 Personas (Capacidad Estándar)</option>
-                      <option value="3 Personas">3 Personas</option>
-                      <option value="4 Personas">4 Personas</option>
-                      <option value="5 a 7 Personas">5 a 7 Personas</option>
-                    </select>
-                  </div>
+                  ))}
                 </div>
               </div>
 
-              <div>
-                <a
-                  href={getWhatsAppBookingLink(activeModalRoom)}
-                  target="_blank"
-                  referrerPolicy="no-referrer"
-                  className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-green-700 hover:bg-green-600 text-white font-bold rounded text-xs uppercase tracking-wider cursor-pointer transition-colors shadow-sm"
-                >
-                  <MessageSquare className="w-5 h-5 fill-current" />
-                  Reservar esta habitación por WhatsApp
-                </a>
-                <p className="text-[10px] text-center text-natural-earth/40 mt-2 font-mono uppercase tracking-wider">
-                  Sujeto a confirmación por depósito del 50%. RUC 20604660174.
-                </p>
-              </div>
-            </div>
+              {/* Right Column: Custom reservation form */}
+              <div className="md:w-1/2 p-6 md:p-8 flex flex-col justify-between">
+                <div>
+                  <span className="text-[10px] font-mono tracking-widest uppercase text-natural-olive font-bold block mb-1">
+                    Reserva Directa vía WhatsApp
+                  </span>
+                  <h3 className="text-2xl font-serif font-light text-natural-soil mb-1">{activeModalRoom.tipo}</h3>
+                  <p className="text-natural-olive font-bold text-sm mb-4">{activeModalRoom.precioDisplay}</p>
+                  <p className="text-xs text-natural-earth/80 leading-relaxed mb-6">
+                    {activeModalRoom.descripcion}
+                  </p>
 
-          </div>
-        </div>
-      )}
+                  {/* Form Simulation */}
+                  <div className="bg-natural-sand border border-natural-border rounded p-4 space-y-3 mb-6">
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-[10px] font-mono uppercase text-natural-earth/50 mb-1">
+                          Llegada
+                        </label>
+                        <input
+                          type="date"
+                          value={inDate}
+                          onChange={(e) => setInDate(e.target.value)}
+                          className="w-full bg-natural-cream border border-natural-border rounded px-2.5 py-1.5 text-xs focus:outline-none focus:border-natural-olive"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[10px] font-mono uppercase text-[#2C2623]/50 mb-1">
+                          Salida
+                        </label>
+                        <input
+                          type="date"
+                          value={outDate}
+                          onChange={(e) => setOutDate(e.target.value)}
+                          className="w-full bg-natural-cream border border-natural-border rounded px-2.5 py-1.5 text-xs focus:outline-none focus:border-natural-olive"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-mono uppercase text-natural-earth/50 mb-1">
+                        Huéspedes
+                      </label>
+                      <select
+                        value={guestsCount}
+                        onChange={(e) => setGuestsCount(e.target.value)}
+                        className="w-full bg-natural-cream border border-natural-border rounded px-2.5 py-1.5 text-xs focus:outline-none focus:border-natural-olive"
+                      >
+                        <option value="1 Persona">1 Persona</option>
+                        <option value="2 Personas">2 Personas (Capacidad Estándar)</option>
+                        <option value="3 Personas">3 Personas</option>
+                        <option value="4 Personas">4 Personas</option>
+                        <option value="5 a 7 Personas">5 a 7 Personas</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <a
+                    href={getWhatsAppBookingLink(activeModalRoom)}
+                    target="_blank"
+                    referrerPolicy="no-referrer"
+                    className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-green-700 hover:bg-green-600 text-white font-bold rounded text-xs uppercase tracking-wider cursor-pointer transition-colors shadow-sm"
+                  >
+                    <MessageSquare className="w-5 h-5 fill-current" />
+                    Reservar esta habitación por WhatsApp
+                  </a>
+                  <p className="text-[10px] text-center text-natural-earth/40 mt-2 font-mono uppercase tracking-wider">
+                    Sujeto a confirmación por depósito del 50%. RUC 20604660174.
+                  </p>
+                </div>
+              </div>
+
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
     </div>
   );

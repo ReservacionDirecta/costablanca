@@ -9,6 +9,7 @@ import SpaView from "./components/SpaView";
 import FAQView from "./components/FAQView";
 import BabyBotChat from "./components/BabyBotChat";
 import { Anchor, Phone, Mail, MapPin, Instagram, Facebook, ShieldCheck, ChevronRight, MessageSquare } from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<string>("inicio");
@@ -66,7 +67,19 @@ export default function App() {
       <Navbar activeTab={activeTab} setActiveTab={setActiveTab} />
 
       {/* Main Content Area */}
-      <main className="flex-grow">{renderActiveView()}</main>
+      <main className="flex-grow overflow-hidden">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.4, ease: [0.25, 1, 0.5, 1] }}
+          >
+            {renderActiveView()}
+          </motion.div>
+        </AnimatePresence>
+      </main>
 
       {/* Footer */}
       <footer className="bg-natural-soil text-natural-sand/85">

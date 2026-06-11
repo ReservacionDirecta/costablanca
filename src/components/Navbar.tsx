@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Menu, X, Phone, Anchor, ShieldCheck, HelpCircle } from "lucide-react";
+import { Menu, X, Phone, Anchor, ShieldCheck } from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
 
 interface NavbarProps {
   activeTab: string;
@@ -44,12 +45,15 @@ export default function Navbar({ activeTab, setActiveTab }: NavbarProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo and Tagline */}
-          <div 
+          <motion.div 
             className="flex items-center gap-3 cursor-pointer"
             onClick={() => {
               setActiveTab("inicio");
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            transition={{ type: "spring", stiffness: 400, damping: 25 }}
           >
             <div className="p-2.5 bg-natural-olive text-natural-cream rounded-full shadow-sm flex items-center justify-center">
               <Anchor className="w-5 h-5" />
@@ -58,38 +62,49 @@ export default function Navbar({ activeTab, setActiveTab }: NavbarProps) {
               <span className="text-2xl font-serif tracking-tight font-light text-natural-soil">COSTA BLANCA</span>
               <span className="text-[9px] tracking-[0.25em] -mt-1 opacity-60 uppercase font-sans">Resort & Spa • Perú</span>
             </div>
-          </div>
+          </motion.div>
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-1 font-sans">
-            {navItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => {
-                  setActiveTab(item.id);
-                  window.scrollTo({ top: 0, behavior: "smooth" });
-                }}
-                className={`px-3 py-2 rounded-md text-xs uppercase tracking-wider font-semibold transition-all duration-200 cursor-pointer ${
-                  activeTab === item.id
-                    ? "bg-natural-olive text-white shadow-sm"
-                    : "text-natural-earth/80 hover:bg-natural-sand hover:text-natural-soil"
-                }`}
-              >
-                {item.label}
-              </button>
-            ))}
+            {navItems.map((item) => {
+              const isActive = activeTab === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => {
+                    setActiveTab(item.id);
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }}
+                  className="relative px-3 py-2 rounded-md text-xs uppercase tracking-wider font-semibold transition-colors duration-200 cursor-pointer text-natural-earth"
+                >
+                  {/* Sliding Active Pill */}
+                  {isActive && (
+                    <motion.span
+                      layoutId="activeNavIndicator"
+                      className="absolute inset-0 bg-natural-olive rounded-md -z-10"
+                      transition={{ type: "spring", stiffness: 350, damping: 28 }}
+                    />
+                  )}
+                  <span className={isActive ? "text-white" : "text-natural-earth/80 hover:text-natural-soil"}>
+                    {item.label}
+                  </span>
+                </button>
+              );
+            })}
           </nav>
 
           {/* Action CTA Button */}
           <div className="hidden lg:block">
-            <a
+            <motion.a
               href="https://wa.me/51932723689"
               target="_blank"
               referrerPolicy="no-referrer"
               className="inline-flex items-center justify-center px-5 py-2.5 rounded-full bg-natural-olive text-natural-cream text-xs font-bold uppercase tracking-widest hover:bg-natural-olive-hover transition-all duration-200"
+              whileHover={{ scale: 1.05, y: -1 }}
+              whileTap={{ scale: 0.98 }}
             >
               Reservar Ahora
-            </a>
+            </motion.a>
           </div>
 
           {/* Mobile menu button */}
@@ -105,37 +120,45 @@ export default function Navbar({ activeTab, setActiveTab }: NavbarProps) {
       </div>
 
       {/* Mobile Navigation Drawer */}
-      {mobileMenuOpen && (
-        <div className="lg:hidden bg-natural-cream border-t border-natural-sand py-3 px-4 space-y-1">
-          {navItems.map((item) => (
-            <button
-              key={item.id}
-              onClick={() => {
-                setActiveTab(item.id);
-                setMobileMenuOpen(false);
-                window.scrollTo({ top: 0, behavior: "smooth" });
-              }}
-              className={`block w-full text-left px-4 py-3 rounded-md text-[13px] uppercase tracking-wider font-medium transition-colors ${
-                activeTab === item.id
-                  ? "bg-natural-olive text-white font-semibold"
-                  : "text-natural-earth hover:bg-natural-sand"
-              }`}
-            >
-              {item.label}
-            </button>
-          ))}
-          <div className="pt-4 pb-2 border-t border-natural-sand">
-            <a
-              href="https://wa.me/51932723689"
-              target="_blank"
-              referrerPolicy="no-referrer"
-              className="flex w-full items-center justify-center px-4 py-3 rounded-md bg-natural-olive font-bold text-xs uppercase tracking-widest text-[#FDFBF7] text-center hover:bg-natural-olive-hover transition-colors"
-            >
-              Escríbenos al WhatsApp
-            </a>
-          </div>
-        </div>
-      )}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div 
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+            className="lg:hidden bg-natural-cream border-t border-natural-sand py-3 px-4 space-y-1 overflow-hidden"
+          >
+            {navItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => {
+                  setActiveTab(item.id);
+                  setMobileMenuOpen(false);
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+                className={`block w-full text-left px-4 py-3 rounded-md text-[13px] uppercase tracking-wider font-medium transition-colors ${
+                  activeTab === item.id
+                    ? "bg-natural-olive text-white font-semibold"
+                    : "text-natural-earth hover:bg-natural-sand"
+                }`}
+              >
+                {item.label}
+              </button>
+            ))}
+            <div className="pt-4 pb-2 border-t border-natural-sand">
+              <a
+                href="https://wa.me/51932723689"
+                target="_blank"
+                referrerPolicy="no-referrer"
+                className="flex w-full items-center justify-center px-4 py-3 rounded-md bg-natural-olive font-bold text-xs uppercase tracking-widest text-[#FDFBF7] text-center hover:bg-natural-olive-hover transition-colors"
+              >
+                Escríbenos al WhatsApp
+              </a>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }
