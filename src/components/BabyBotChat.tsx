@@ -79,11 +79,70 @@ export default function BabyBotChat() {
 
       setMessages(prev => [...prev, botMsg]);
     } catch (err) {
-      console.error(err);
+      console.warn("Fallo en la comunicación con el servidor. Usando el motor de respuesta offline de respaldo local de Vichayito:", err);
+      
+      const q = textToSend.toLowerCase();
+      let responseText = "";
+
+      if (q.includes("precio") || q.includes("tarifa") || q.includes("habita") || q.includes("costo") || q.includes("bungalow") || q.includes("cuarto") || q.includes("alojar")) {
+        responseText = `🛌 **Habitaciones y Tarifas por noche (con desayuno buffet y Wifi de fibra óptica incluidos):**\n\n` +
+          `• **Habitación Matrimonial** (2 personas): Desde **S/ 200/noche**. Balcón privado frente al mar.\n` +
+          `• **Matrimonial Jacuzzi** (2 personas): Desde **S/ 350 - S/ 599/noche**. Cuenta con Jacuzzi privado y balcón con la mejor vista al atardecer.\n` +
+          `• **Habitación Doble** (3-4 personas): Desde **S/ 200 - S/ 350/noche**. Equipado con balcón frente al mar.\n` +
+          `• **Habitación Quíntuple** (5-7 personas): Desde **S/ 400 - S/ 599/noche**. Muy amplia (30m²).\n\n` +
+          `* El check-in oficial es a las 15:00 (3:00 pm), pero puedes ingresar gratis al hotel desde las 6:00 am para usar las 3 piscinas templadas y el restaurante.\n` +
+          `* Separa tu fecha especial abonando el 50% vía depósito, transferencia o Yape.\n\n` +
+          `Contacta a reservas directas al WhatsApp **+51 932 723 689**.`;
+      } else if (q.includes("tortuga") || q.includes("nado") || q.includes("nadar") || q.includes("tour") || q.includes("excurs") || q.includes("lancha") || q.includes("ballena") || q.includes("manglar") || q.includes("actividad")) {
+        responseText = `🐢 **Tours y Excursiones Recomendadas por el Hotel:**\n\n` +
+          `• **Nadar con Tortugas en el Ñuro:** **S/ 55 por persona**. Incluye traslado ida/vuelta desde el lobby del hotel, chaleco de seguridad, guía personalizado y nado libre de 1 hora.\n` +
+          `• **Paseo Costero en Lancha:** **S/ 55 por persona**. Paseo por las bahías, avistamiento de lobos marinos, fotos GoPro y nado con tortugas (3.5 horas).\n` +
+          `• **Avistamiento de Ballenas** (Jul 10 - Oct 15): Desde **S/ 55 hasta S/ 110**. Disfruta de acrobáticos saltos de ballenas y oye sus cantos con hidrófonos de altamar.\n` +
+          `• **Manglares de Tumbes Completo:** **S/ 80 - S/ 110**. Tour full day (12 horas) hacia el Santuario Nacional, criadero de cocodrilos, Zorritos y Punta Sal.\n\n` +
+          `Escribe al área de Tours al WhatsApp **+51 913 721 860** para separar cupos de mañana o tarde.`;
+      } else if (q.includes("colegio") || q.includes("promo") || q.includes("viaje") || q.includes("estudia") || q.includes("escolar")) {
+        responseText = `🎓 **Viajes de Promoción Escolar (Especialistas desde 1998):**\n\n` +
+          `• **Servicio Todo Incluido:** Alojamiento de alta seguridad, desayuno + almuerzo + cena, tours guiados certificados (Tortugas, lancha, banana acuática), Fiesta Blanca de Promoción con DJ privado, coctel de bienvenida, y vigilancia permanente 24/7.\n` +
+          `• **Exclusividad de Aforo:** Solo aceptamos 2 colegios al mes para garantizar la máxima atención y cuidado personalizado.\n` +
+          `• **Programa de Becas:** Los alumnos que no puedan solventar su viaje son becados de forma 100% gratuita por nuestra administración escolar.\n` +
+          `• **Garantía Reembolsable:** Ofrecemos reembolso del 100% ante cancelaciones ajenas o contingencias de fuerza mayor.\n\n` +
+          `Solicita una cotización detallada o coordina una visita de inspección gratuita llamando al Asesor Especializado al WhatsApp **+51 985 510 282**.`;
+      } else if (q.includes("mascota") || q.includes("perro") || q.includes("gato") || q.includes("pet") || q.includes("animal")) {
+        responseText = `🐶 **Políticas Pet Friendly del Hotel (Gratis):**\n\n` +
+          `• ¡Somos 100% Pet Friendly con mucho cariño! Aceptamos mascotas pequeñas de casa sin ningún recargo en la estadía ni depósitos adicionales.\n` +
+          `• Tu mejor amigo podrá estar contigo en los jardines del resort y áreas exteriores compartiendo el sol eterno.\n\n` +
+          `Si tienes una consulta especial sobre mascotas medianas, por favor escríbenos al WhatsApp **+51 932 723 689**.`;
+      } else if (q.includes("llegar") || q.includes("talara") || q.includes("piura") || q.includes("ubica") || q.includes("donde") || q.includes("mapa") || q.includes("direcc")) {
+        responseText = `📍 **Ubicación y Logística de Vial:**\n\n` +
+          `• **Dirección:** Playa Vichayito Norte, Máncora, Piura (a solo 5 km de la Plaza Principal de Máncora, unos 12-15 minutos en un mototaxi seguro, con un costo habitual de S/ 15 a S/ 20).\n` +
+          `• **Desde Aeropuerto de Talara:** Se encuentra a 1.5 horas en auto privado.\n` +
+          `• **Desde Aeropuerto de Piura:** Se encuentra a 3 horas de camino.\n` +
+          `• **Servicio de Bienvenida:** Si tu bus o vuelo llega por la mañana muy temprano, puedes ingresar al hotel desde las 6:00 am del check-in, acomodar el equipaje en custodia, y disfrutar del restaurante y piscinas.\n\n` +
+          `Para coordinar traslados con choferes autorizados del hotel, comunícate al WhatsApp de atención al cliente **+51 932 723 689**.`;
+      } else if (q.includes("comida") || q.includes("restaurante") || q.includes("carta") || q.includes("almuer") || q.includes("cena") || q.includes("comer") || q.includes("plat")) {
+        responseText = `🍽️ **Gastronomía del Restaurante Costablanca:**\n\n` +
+          `• **Carta Marina y Norteña:** Más de 60 platos tradicionales de pescados frescos, mariscos, lomo saltado, causas ricas y postres del norte.\n` +
+          `• **El Plato Estrella del Chef:** *Tacu Tacu crujiente en salsa de mariscos al pisco* (Aprox. S/ 40).\n` +
+          `• **Room Service Gratuito:** Llevamos tus delicias hasta la puerta de tu habitación o terraza sin ningún costo ni recargo por servicio.\n` +
+          `• **Horarios del Salón:** Desayunos buffet de 7:30 am a 10:30 am, almuerzos de 12:00 pm a 4:30 pm, y cenas de 6:30 pm a 10:00 pm.`;
+      } else {
+        responseText = `🌴 **¡Bienvenido a Hotel Costablanca Vichayito!**\n\n` +
+          `Contamos con sol eterno, 3 piscinas templadas frente al mar, cómodos bungalows y tours de aventura inolvidables en el norte.\n\n` +
+          `Por favor, hazme una consulta sobre:\n` +
+          `• **Habitaciones:** Precios y características de bungalows y matrimoniales.\n` +
+          `• **Tours:** Nadar con tortugas gigantes en el Ñuro, avistamiento de ballenas.\n` +
+          `• **Mascotas:** ¡Tu perrito o gatito es bienvenido gratis!\n` +
+          `• **Colegios:** Planes todo incluido para viajes de promoción escolar.\n\n` +
+          `**Canales de Contacto Directo WhatsApp:**\n` +
+          `📞 Reservas y General: **+51 932 723 689**\n` +
+          `📞 Actividades y Tours: **+51 913 721 860**\n` +
+          `📞 Asesoría de Colegios: **+51 985 510 282**`;
+      }
+
       const errorMsg: ChatMessage = {
         id: Math.random().toString(),
         role: "model",
-        content: "Lo lamento, no logré conectarme con mis servidores en este momento. Por favor, vuelve a intentarlo o comunícate vía WhatsApp al **+51 932 723 689**.",
+        content: `🌴 **[Asistente de Respaldo Local]**\n\n${responseText}`,
         timestamp: new Date()
       };
       setMessages(prev => [...prev, errorMsg]);
