@@ -1,0 +1,6 @@
+{
+  "name": "Hotel Costablanca",
+  "description": "Sitio web del Hotel Costablanca en playa Vichayito, Máncora, Piura. Habitaciones, restaurante, tours, viajes de promoción de colegios, FAQ y asistente virtual.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
