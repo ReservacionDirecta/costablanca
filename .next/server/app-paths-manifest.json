@@ -1,0 +1,10 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/habitaciones/page": "app/habitaciones/page.js",
+  "/servicios/page": "app/servicios/page.js",
+  "/galeria/page": "app/galeria/page.js",
+  "/page": "app/page.js",
+  "/experiencias/page": "app/experiencias/page.js",
+  "/ubicacion/page": "app/ubicacion/page.js",
+  "/faq/page": "app/faq/page.js"
+}

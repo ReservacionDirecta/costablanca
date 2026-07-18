@@ -1,0 +1,217 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   TOKENS GLOBALES
+   ============================================================ */
+:root {
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-sans: 'Hanken Grotesk', system-ui, sans-serif;
+
+  /* Alias semánticos */
+  --bg: var(--arena-50);
+  --surface: #ffffff;
+  --ink: var(--arena-900);
+  --ink-soft: var(--arena-700);
+  --ink-mute: var(--arena-600);
+  --line: var(--arena-200);
+  --brand: var(--mar-500);
+  --brand-ink: var(--mar-700);
+  --accent: var(--terracota-500);
+  --accent-ink: var(--terracota-600);
+  --wa: #25d366;
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-arena-50 text-arena-900 font-sans antialiased;
+    font-feature-settings: 'ss01', 'cv01';
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-display;
+    color: var(--mar-800);
+    font-weight: 600;
+  }
+
+  ::selection {
+    background: var(--mar-200);
+    color: var(--mar-900);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--terracota-500);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+}
+
+/* ============================================================
+   COMPONENTES REUTILIZABLES
+   ============================================================ */
+@layer components {
+  /* Contenedor estándar */
+  .container-site {
+    @apply mx-auto w-full max-w-content px-5 sm:px-6 lg:px-8;
+  }
+
+  /* Sección con ritmo vertical */
+  .section {
+    @apply py-16 sm:py-20 lg:py-24;
+  }
+
+  /* Cabecera de sección */
+  .section-head {
+    @apply max-w-prose;
+  }
+  .eyebrow {
+    @apply mb-3 inline-block text-xs font-semibold uppercase tracking-[0.18em] text-terracota-600;
+  }
+  .section-title {
+    @apply text-display-md font-semibold text-mar-800;
+  }
+  .section-lead {
+    @apply mt-3 text-base leading-relaxed text-arena-700;
+  }
+
+  /* Botones */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-all duration-200;
+  }
+  .btn-primary {
+    @apply bg-terracota-500 text-white hover:bg-terracota-600 active:scale-[0.98] shadow-sm hover:shadow-md;
+  }
+  .btn-wa {
+    @apply bg-[#25D366] text-white hover:bg-[#1ebe5d] active:scale-[0.98] shadow-sm hover:shadow-md;
+  }
+  .btn-ghost {
+    @apply border border-arena-300 bg-transparent text-mar-700 hover:border-mar-500 hover:bg-mar-50;
+  }
+
+  /* Tarjeta base */
+  .card {
+    @apply rounded-2xl bg-white shadow-card border border-arena-200/60 p-6 transition-shadow duration-300 hover:shadow-card-hover;
+  }
+
+  /* Separador */
+  .hairline {
+    @apply border-t border-arena-200;
+  }
+
+  /* Foto con velo */
+  .photo-veil {
+    background: linear-gradient(to top, rgb(13 26 24 / 0.65), rgb(13 26 24 / 0.08) 60%);
+  }
+
+  /* Número decorativo grande */
+  .num-deco {
+    @apply font-display text-[5rem] leading-none font-semibold text-mar-100 select-none;
+  }
+
+  /* Tag de amenidad */
+  .amenity-tag {
+    @apply rounded-full bg-arena-100 border border-arena-200 px-2.5 py-1 text-xs font-medium text-arena-700;
+  }
+
+  /* Barra de acento izquierda */
+  .accent-bar {
+    @apply border-l-2 border-terracota-500 pl-4;
+  }
+}
+
+/* ============================================================
+   UTILIDADES / MOTION
+   ============================================================ */
+@layer utilities {
+  /* Reveal animation — controlado por JS Intersection Observer o CSS */
+  .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    animation: fade-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  .reveal-scale {
+    opacity: 0;
+    transform: scale(0.96);
+    animation: scale-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  /* Hover zoom para imágenes */
+  .img-zoom {
+    @apply overflow-hidden;
+  }
+  .img-zoom img,
+  .img-zoom > div > img {
+    @apply transition-transform duration-500 ease-out;
+  }
+  .img-zoom:hover img,
+  .img-zoom:hover > div > img {
+    transform: scale(1.05);
+  }
+
+  /* Gradiente oscuro de marca */
+  .bg-mar-gradient {
+    background: linear-gradient(135deg, #142825 0%, #1d3934 60%, #284b45 100%);
+  }
+
+  /* Overlay de lectura sobre fotos */
+  .photo-overlay-soft {
+    background: linear-gradient(to top, rgb(13 26 24 / 0.75), transparent 70%);
+  }
+
+  /* Pulse ring para WhatsApp */
+  .pulse-ring {
+    @apply absolute inset-0 rounded-full;
+    animation: pulse-ring 2.5s ease-out infinite;
+  }
+
+  /* Línea decorativa bajo título */
+  .title-underline::after {
+    content: '';
+    @apply block mt-3 h-0.5 w-10 bg-terracota-500 rounded-full;
+  }
+}
+
+/* ============================================================
+   KEYFRAMES
+   ============================================================ */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes pulse-ring {
+  0%   { opacity: 0.5; transform: scale(1); }
+  70%  { opacity: 0;   transform: scale(1.5); }
+  100% { opacity: 0;   transform: scale(1.5); }
+}
+
+@keyframes shimmer {
+  from { background-position: -200% 0; }
+  to   { background-position: 200% 0; }
+}
+
+/* ============================================================
+   MOTION REDUCE
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
