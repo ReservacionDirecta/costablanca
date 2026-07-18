@@ -51,12 +51,12 @@ export default function BookingWidget() {
   }
 
   const inputClass =
-    'mt-1.5 w-full rounded-lg border border-white/15 bg-white/10 px-3 py-2.5 text-sm text-white placeholder-white/40 outline-none transition focus:border-white/40 focus:bg-white/15 focus:ring-1 focus:ring-white/20';
+    'mt-1.5 w-full min-w-0 rounded-lg border border-white/15 bg-white/10 px-2 py-2.5 text-xs text-white placeholder-white/30 outline-none transition focus:border-white/40 focus:bg-white/15 focus:ring-1 focus:ring-white/20 sm:px-3 sm:text-sm';
 
   const selectClass =
-    'mt-1.5 w-full rounded-lg border border-white/15 bg-white/10 px-3 py-2.5 text-sm text-white outline-none transition focus:border-white/40 focus:bg-white/15 focus:ring-1 focus:ring-white/20 appearance-none cursor-pointer';
+    'mt-1.5 w-full min-w-0 rounded-lg border border-white/15 bg-white/10 px-2 py-2.5 text-xs text-white outline-none transition focus:border-white/40 focus:bg-white/15 focus:ring-1 focus:ring-white/20 appearance-none cursor-pointer sm:px-3 sm:text-sm';
 
-  const labelClass = 'block text-[10px] font-semibold uppercase tracking-[0.12em] text-white/60 sm:text-xs';
+  const labelClass = 'block text-[9px] font-semibold uppercase tracking-[0.12em] text-white/60 sm:text-xs';
 
   return (
     <form
