@@ -30,7 +30,7 @@ export default function UbicacionPage() {
           <div className="overflow-hidden rounded-2xl shadow-card">
             <iframe
               title="Mapa Hotel Costa Blanca de Vichayito"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4000.1431389776767!2d-81.10788462502407!3d-4.138062795835702!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9036924dfc76fc99%3A0x21fa66befe732719!2sLos%20Cocos%20de%20Vichayito!5e1!3m2!1ses!2spe!4v1784386263779!5m2!1ses!2spe"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4000.17329383877!2d-81.10429928944542!3d-4.132088495824324!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x903693b9d972abbb%3A0xb2859840d8cdea38!2sHotel%20Costablanca!5e1!3m2!1ses!2spe!4v1784405178060!5m2!1ses!2spe"
               className="h-64 w-full sm:h-80"
               style={{ border: 0 }}
               allowFullScreen
