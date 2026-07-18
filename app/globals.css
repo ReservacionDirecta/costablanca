@@ -83,23 +83,23 @@
     @apply mt-3 text-base leading-relaxed text-arena-700;
   }
 
-  /* Botones */
+  /* Botones con transiciones dinámicas y micro-escalado */
   .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-all duration-200;
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300 active:scale-95;
   }
   .btn-primary {
-    @apply bg-terracota-500 text-white hover:bg-terracota-600 active:scale-[0.98] shadow-sm hover:shadow-md;
+    @apply bg-terracota-500 text-white hover:bg-terracota-600 shadow-sm hover:-translate-y-0.5 hover:shadow-md active:translate-y-0;
   }
   .btn-wa {
-    @apply bg-[#25D366] text-white hover:bg-[#1ebe5d] active:scale-[0.98] shadow-sm hover:shadow-md;
+    @apply bg-[#25D366] text-white hover:bg-[#1ebe5d] shadow-sm hover:-translate-y-0.5 hover:shadow-md active:translate-y-0;
   }
   .btn-ghost {
-    @apply border border-arena-300 bg-transparent text-mar-700 hover:border-mar-500 hover:bg-mar-50;
+    @apply border border-arena-300 bg-transparent text-mar-700 hover:border-mar-500 hover:bg-mar-50 hover:-translate-y-0.5 active:translate-y-0;
   }
 
-  /* Tarjeta base */
+  /* Tarjeta base con micro-desplazamiento en hover */
   .card {
-    @apply rounded-2xl bg-white shadow-card border border-arena-200/60 p-6 transition-shadow duration-300 hover:shadow-card-hover;
+    @apply rounded-2xl bg-white shadow-card border border-arena-200/60 p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover;
   }
 
   /* Separador */
@@ -119,7 +119,7 @@
 
   /* Tag de amenidad */
   .amenity-tag {
-    @apply rounded-full bg-arena-100 border border-arena-200 px-2.5 py-1 text-xs font-medium text-arena-700;
+    @apply rounded-full bg-arena-100 border border-arena-200 px-2.5 py-1 text-xs font-medium text-arena-700 transition-colors duration-200 hover:bg-arena-200/60 hover:text-mar-800;
   }
 
   /* Barra de acento izquierda */
@@ -170,7 +170,7 @@
 
   /* Pulse ring para WhatsApp */
   .pulse-ring {
-    @apply absolute inset-0 rounded-full;
+    @apply absolute inset-0 rounded-full bg-[#25D366]/40;
     animation: pulse-ring 2.5s ease-out infinite;
   }
 
